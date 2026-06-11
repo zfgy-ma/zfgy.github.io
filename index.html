@@ -153,7 +153,7 @@
       .nav-indicator--royal  { background-color: rgba(37, 99, 235, 0.12); border-color: #2563EB; }
       .nav-indicator--coral  { background-color: rgba(255, 107, 107, 0.12); border-color: #FF6B6B; }
       .nav-indicator--violet { background-color: rgba(167, 139, 250, 0.12); border-color: #A78BFA; }
-      .nav-indicator--sun    { background-color: rgba(255, 217, 61, 0.18);  border-color: #FFD93D; }
+      。nav-indicator--sun    { background-color: rgba(255, 217, 61, 0.18);  border-color: #FFD93D; }
       .nav-indicator--mint   { background-color: rgba(74, 222, 128, 0.12); border-color: #4ADE80; }
 
       html.dark .nav-indicator--royal  { background-color: rgba(37, 99, 235, 0.22); border-color: #2563EB; }
@@ -179,8 +179,8 @@
         indicator.style.height = (target.offsetHeight + gap * 2) + 'px';
         indicator.style.opacity = '1';
         // 清空所有颜色类，再设置当前色
-        indicator.className = indicator.className
-          .replace(/nav-indicator--\w+/g, '')
+        indicator。className = indicator。className
+          。替换(/nav-indicator--\w+/g， '')
           .trim() + ' nav-indicator--' + getNavColor(target);
       }
 
@@ -522,8 +522,6 @@
         class="mt-10 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-400">
         <span>&copy; 2026 拾光札记 · 由claude与咖啡驱动</span>
         <span class="font-medium text-gray-500">"记录本身，即是反抗。"</span>
-        <a onclick="jumpGabPre('您即将离开公安部“互联网+政务服务”平台，后续服务将由全国互联网安全管理服务平台（https://beian.mps.gov.cn）提供。',
-                                    'https://beian.mps.gov.cn/#/query/webSearch?code=11010102000001')">皖ICP备2026017159号-1</a>
       </div>
     </div>
   </footer>
