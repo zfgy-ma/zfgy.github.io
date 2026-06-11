@@ -1,0 +1,56 @@
+.markdown-body h2 {
+    font-size     : 1.35rem;
+    font-weight   : 800;
+    margin-top    : 1.75em;
+    margin-bottom : 0.5em;
+    padding-bottom: 0.3em;
+    border-bottom : 2px solid #e5e7eb;
+}
+
+.markdown-body h3 {
+    font-size    : 1.15rem;
+    font-weight  : 700;
+    margin-top   : 1.5em;
+    margin-bottom: 0.4em;
+}
+
+.markdown-body p {
+    margin-bottom: 0.9em;
+    line-height  : 1.85;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+    padding-left : 1.5em;
+    margin-bottom: 0.9em;
+}
+
+.markdown-body li {
+    margin-bottom: 0.3em;
+}
+
+.markdown-body blockquote {
+    border-left: 3px solid #2563EB;
+    padding    : 0.5em 1em;
+    margin     : 1em 0;
+    color      : #4B5563;
+    background : #f8fafc;
+}
+
+.markdown-body strong {
+    font-weight: 800;
+    color      : #111111;
+}
+
+.markdown-body code {
+    background   : #f1f5f9;
+    padding      : 0.15em 0.4em;
+    border-radius: 3px;
+    font-size    : 0.9em;
+}
+
+.markdown-body hr {
+    border    : none;
+    border-top: 2px solid #e5e7eb;
+    margin    : 2em 0;
+}

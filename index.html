@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拾光札记 — 一个大学生的日常随笔</title>
+
+  <!-- 阻止暗色模式刷新闪烁：在页面渲染前设置 html.dark 类 -->
+  <script>
+    (function () { var t = localStorage.getItem('theme') || 'light'; document.documentElement.classList.toggle('dark', t === 'dark') })();
+  </script>
+  
+  <link rel="stylesheet" type="text/css" href="./css/index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <link href="./css/tailwind-output.css" rel="stylesheet">
+
+  <!-- 白天/黑夜切换按钮组件 -->
+  <script src="./js/Day_and_night_script.js"></script>
+  <!-- marked.js — Markdown 渲染 -->
+  <link rel="stylesheet" type="text/css" href="./css/markdown.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- highlight.js — 代码块语法高亮 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+</head>
+
+<body class="bg-white text-ink font-sans antialiased leading-relaxed">
+
+<header class="sticky top-0 z-50 bg-white border-b-2 border-black">
+    <div class="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <a href="#" class="flex items-center gap-2 text-2xl md:text-3xl font-black text-ink tracking-tight select-none">
+          <span class="block w-3 h-3 md:w-3.5 md:h-3.5 bg-royal rounded-sm flex-shrink-0 border border-black"></span>
+          拾光札记
+          <span class="color-palette" aria-label="色彩测试标板">
+            <span class="swatch" style="background:#FFFFFF" data-hex="#FFF" title="#FFFFFF 纯白"></span>
+            <span class="swatch" style="background:#2563EB" data-hex="#25E" title="#2563EB 宝蓝"></span>
+            <span class="swatch" style="background:#111827" data-hex="#118" title="#111827 深灰黑"></span>
+            <span class="swatch" style="background:#4B5563" data-hex="#4B5" title="#4B5563 中灰"></span>
+            <span class="swatch" style="background:#000000" data-hex="#000" title="#000000 纯黑"></span>
+            <span class="swatch" style="background:#FF6B6B" data-hex="#F66" title="#FF6B6B 珊瑚红"></span>
+            <span class="swatch" style="background:#FFD93D" data-hex="#FD3" title="#FFD93D 明黄"></span>
+            <span class="swatch" style="background:#6BCB77" data-hex="#6B7" title="#6BCB77 薄荷绿"></span>
+            <span class="swatch" style="background:#9B59B6" data-hex="#95B" title="#9B59B6 紫色"></span>
+          </span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-3 text-base font-semibold relative js-desktop-nav select-none">
+          <div class="js-desktop-indicator absolute border-2 border-black rounded-md opacity-0 pointer-events-none" 
+               style="z-index: 0; left: 0; top: 0; width: 0; height: 0;"></div>
+          
+          <a href="#" class="js-nav-filter text-ink hover:text-royal transition-all duration-200 px-3 py-1 rounded relative z-10" data-category="" data-color="royal">全部</a>
+          <a href="#" class="js-nav-filter text-ink hover:text-royal transition-all duration-200 px-3 py-1 rounded relative z-10" data-category="随笔" data-color="coral">随笔</a>
+          <a href="#" class="js-nav-filter text-ink hover:text-royal transition-all duration-200 px-3 py-1 rounded relative z-10" data-category="技术" data-color="violet">技术</a>
+          <a href="#" class="js-nav-filter text-ink hover:text-royal transition-all duration-200 px-3 py-1 rounded relative z-10" data-category="读书" data-color="sun">读书</a>
+          <a href="#" class="js-nav-filter text-ink hover:text-royal transition-all duration-200 px-3 py-1 rounded relative z-10" data-category="日常" data-color="mint">日常</a>
+          <a href="#/time" id="desktop-time-link" class="text-ink hover:text-violet transition-all duration-200 font-bold px-3 py-1 rounded relative z-10" data-color="violet">时间</a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <div class="hidden md:block">
+            <script>
+              (function () { document.write('<theme-button value="' + (localStorage.getItem('theme') || 'light') + '" id="theme-toggle" size="2"></theme-button>') })();
+            </script>
+          </div>
+          <button id="btn-theme-mobile"
+            class="md:hidden btn-pop w-10 h-10 flex items-center justify-center border-2 border-black rounded-lg bg-white text-lg shadow-hard-sm"
+            title="切换主题">
+            <span id="theme-icon-mobile">🌙</span>
+          </button>
+          <button id="btn-mobile-menu"
+            class="md:hidden w-10 h-10 flex items-center justify-center border-2 border-black rounded-lg text-lg hover:bg-ink hover:text-white transition-all duration-200"
+            title="菜单">
+            ☰
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-nav" class="hidden md:hidden bg-white pb-4">
+        <nav class="relative flex flex-col gap-1 px-4 pt-2 js-mobile-nav select-none">
+          <div class="js-mobile-indicator absolute border-2 border-black rounded-md opacity-0 pointer-events-none" 
+               style="z-index: 0; left: 0; top: 0; width: 0; height: 0;"></div>
+          
+          <a href="#" class="js-nav-filter block py-2.5 px-4 text-base font-semibold text-ink rounded relative z-10" data-category="" data-color="royal">全部</a>
+          <a href="#" class="js-nav-filter block py-2.5 px-4 text-base font-semibold text-ink rounded relative z-10" data-category="随笔" data-color="coral">随笔</a>
+          <a href="#" class="js-nav-filter block py-2.5 px-4 text-base font-semibold text-ink rounded relative z-10" data-category="技术" data-color="violet">技术</a>
+          <a href="#" class="js-nav-filter block py-2.5 px-4 text-base font-semibold text-ink rounded relative z-10" data-category="读书" data-color="sun">读书</a>
+          <a href="#" class="js-nav-filter block py-2.5 px-4 text-base font-semibold text-ink rounded relative z-10" data-category="日常" data-color="mint">日常</a>
+          <a href="#/time" id="mobile-time-link" class="block py-2.5 px-4 text-base font-semibold text-ink rounded relative z-10" data-color="violet">时间</a>
+          <a href="#" id="mobile-about-link" class="block py-2.5 px-4 text-base font-semibold text-ink rounded relative z-10">关于我</a>
+        </nav>
+      </div>
+    </div>
+
+    <style>
+      /* 桌面端框选色滑块核心动效：采用高弹缓动曲线，带来极其自然的跟随感 */
+      .js-desktop-indicator {
+        transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                    top 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                    width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                    height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                    opacity 0.2s ease-out,
+                    background-color 0.25s ease;
+        box-shadow: 2px 2px 0px 0px #111111;
+      }
+      html.dark .js-desktop-indicator {
+        box-shadow: 2px 2px 0px 0px #444444;
+      }
+
+      /* 移动端下拉菜单过渡效果：通过覆写隐藏类，实现零冲突的丝滑滑入与淡入 */
+      #mobile-nav {
+        display: block !important; /* 深度联动覆写 Tailwind 的 hidden */
+        max-height: 500px;
+        opacity: 1;
+        overflow: hidden;
+        border-top: 2px solid #111111;
+        transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                    opacity 0.25s ease-out,
+                    padding 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                    border-top-width 0.15s ease-out;
+      }
+      #mobile-nav.hidden {
+        max-height: 0 !important;
+        opacity: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        pointer-events: none;
+        border-top-width: 0px !important;
+      }
+      html.dark #mobile-nav {
+        border-top-color: #444444;
+      }
+
+      /* 移动端触摸追踪指示器样式 */
+      .js-mobile-indicator {
+        transition: left 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                    top 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                    width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                    height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                    opacity 0.15s ease-out,
+                    background-color 0.2s ease;
+        box-shadow: 2px 2px 0px 0px #111111;
+      }
+      html.dark .js-mobile-indicator {
+        box-shadow: 2px 2px 0px 0px #444444;
+      }
+
+      /* 指示器各色系背景 + 边框色 */
+      .nav-indicator--royal  { background-color: rgba(37, 99, 235, 0.12); border-color: #2563EB; }
+      .nav-indicator--coral  { background-color: rgba(255, 107, 107, 0.12); border-color: #FF6B6B; }
+      .nav-indicator--violet { background-color: rgba(167, 139, 250, 0.12); border-color: #A78BFA; }
+      .nav-indicator--sun    { background-color: rgba(255, 217, 61, 0.18);  border-color: #FFD93D; }
+      .nav-indicator--mint   { background-color: rgba(74, 222, 128, 0.12); border-color: #4ADE80; }
+
+      html.dark .nav-indicator--royal  { background-color: rgba(37, 99, 235, 0.22); border-color: #2563EB; }
+      html.dark .nav-indicator--coral  { background-color: rgba(255, 107, 107, 0.22); border-color: #FF6B6B; }
+      html.dark .nav-indicator--violet { background-color: rgba(167, 139, 250, 0.22); border-color: #A78BFA; }
+      html.dark .nav-indicator--sun    { background-color: rgba(255, 217, 61, 0.16);  border-color: #FFD93D; }
+      html.dark .nav-indicator--mint   { background-color: rgba(74, 222, 128, 0.16); border-color: #4ADE80; }
+    </style>
+
+    <script>
+      // ===== 导航指示器共用工具 =====
+      function getNavColor(target) {
+        const c = target.dataset && target.dataset.color;
+        if (c && ['royal','coral','violet','sun','mint'].indexOf(c) !== -1) return c;
+        return 'royal';
+      }
+
+      function applyIndicatorStyle(indicator, target, gap) {
+        gap = gap || 0;
+        indicator.style.left = (target.offsetLeft - gap) + 'px';
+        indicator.style.top  = (target.offsetTop  - gap) + 'px';
+        indicator.style.width  = (target.offsetWidth  + gap * 2) + 'px';
+        indicator.style.height = (target.offsetHeight + gap * 2) + 'px';
+        indicator.style.opacity = '1';
+        // 清空所有颜色类，再设置当前色
+        indicator.className = indicator.className
+          .replace(/nav-indicator--\w+/g, '')
+          .trim() + ' nav-indicator--' + getNavColor(target);
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        // -------------------- 【1. 桌面端平滑跟随框选交互】 --------------------
+        var desktopNav = document.querySelector('.js-desktop-nav');
+        var dIndicator = document.querySelector('.js-desktop-indicator');
+        var INDENT_GAP = 4;
+        
+        if (desktopNav && dIndicator) {
+          var dLinks = desktopNav.querySelectorAll('a');
+
+          function updateDesktopIndicator(target) {
+            if (target) {
+              applyIndicatorStyle(dIndicator, target, INDENT_GAP);
+            } else {
+              // 鼠标移出菜单区，回弹到当前 .nav-active 项
+              var activeLink = Array.from(dLinks).find(function(link) {
+                return link.classList.contains('nav-active');
+              });
+              if (activeLink) {
+                applyIndicatorStyle(dIndicator, activeLink, INDENT_GAP);
+              } else {
+                dIndicator.style.opacity = '0';
+              }
+            }
+          }
+
+          dLinks.forEach(function(link) {
+            link.addEventListener('mouseenter', function() { updateDesktopIndicator(link); });
+          });
+          desktopNav.addEventListener('mouseleave', function() { updateDesktopIndicator(null); });
+
+          // MutationObserver：当 index.js 动态切换 nav-active 类时，滑块自动跟上
+          var dObserver = new MutationObserver(function() {
+            if (!desktopNav.matches(':hover')) updateDesktopIndicator(null);
+          });
+          dLinks.forEach(function(link) {
+            dObserver.observe(link, { attributes: true, attributeFilter: ['class'] });
+          });
+
+          setTimeout(function() { updateDesktopIndicator(null); }, 300);
+          window.addEventListener('hashchange', function() {
+            setTimeout(function() { updateDesktopIndicator(null); }, 60);
+          });
+        }
+
+        // -------------------- 【2. 移动端触摸位置精准跟随框选交互】 --------------------
+        var mobileNav = document.querySelector('.js-mobile-nav');
+        var mIndicator = document.querySelector('.js-mobile-indicator');
+
+        if (mobileNav && mIndicator) {
+          var mLinks = mobileNav.querySelectorAll('a');
+
+          function updateMobileIndicator(target) {
+            if (target) {
+              applyIndicatorStyle(mIndicator, target, 2);
+            } else {
+              var activeLink = Array.from(mLinks).find(function(link) {
+                return link.classList.contains('nav-active');
+              });
+              if (activeLink) {
+                applyIndicatorStyle(mIndicator, activeLink, 2);
+              } else {
+                mIndicator.style.opacity = '0';
+              }
+            }
+          }
+
+          function handleMobileTouchTrack(e) {
+            var touch = e.touches[0];
+            var currentElement = document.elementFromPoint(touch.clientX, touch.clientY);
+            if (!currentElement) return;
+            var targetLink = currentElement.closest('a');
+            if (targetLink && mobileNav.contains(targetLink)) {
+              updateMobileIndicator(targetLink);
+            }
+          }
+
+          mobileNav.addEventListener('touchstart', handleMobileTouchTrack, { passive: true });
+          mobileNav.addEventListener('touchmove', handleMobileTouchTrack, { passive: true });
+          mobileNav.addEventListener('touchend', function() {
+            setTimeout(function() { updateMobileIndicator(null); }, 200);
+          });
+
+          var mObserver = new MutationObserver(function() { updateMobileIndicator(null); });
+          mLinks.forEach(function(link) {
+            mObserver.observe(link, { attributes: true, attributeFilter: ['class'] });
+          });
+
+          var mmBtn = document.getElementById('btn-mobile-menu');
+          if (mmBtn) {
+            mmBtn.addEventListener('click', function() {
+              setTimeout(function() { updateMobileIndicator(null); }, 120);
+            });
+          }
+
+          setTimeout(function() { updateMobileIndicator(null); }, 300);
+          window.addEventListener('hashchange', function() {
+            setTimeout(function() { updateMobileIndicator(null); }, 60);
+          });
+        }
+      });
+    </script>
+  </header>
+
+  <section class="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-16 md:py-24 lg:py-32">
+    <div class="grid grid-cols-1 md:grid-cols-[5fr_4fr] gap-10 md:gap-16 items-center">
+
+      <div class="space-y-6 md:space-y-8">
+        <div class="flex gap-1.5">
+          <span class="block w-12 h-2 bg-royal rounded-sm border border-black"></span>
+          <span class="block w-6 h-2 bg-coral rounded-sm border border-black"></span>
+          <span class="block w-3 h-2 bg-sun rounded-sm border border-black"></span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] tracking-tight text-ink">
+          在<span class="text-royal">平凡日常</span>里<br>拾取<span class="text-coral">发光的</span>碎片
+        </h1>
+        <p class="text-base md:text-lg text-gray-600 max-w-lg">
+          一个学生的日常随笔。记录生活里的琐碎思考、读书笔记，以及那些不想被时间冲淡的瞬间。
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#articles" id="btn-browse"
+            class="btn-pop inline-block px-6 py-3 md:px-8 md:py-3.5 border-2 border-black rounded-lg font-bold text-base bg-royal text-white cursor-pointer select-none">
+            随便看看 →
+          </a>
+          <a href="#" id="btn-about"
+            class="btn-pop inline-block px-6 py-3 md:px-8 md:py-3.5 border-2 border-black rounded-lg font-bold text-base bg-white text-ink cursor-pointer select-none">
+            关于我
+          </a>
+        </div>
+      </div>
+
+      <div class="relative h-64 sm:h-72 md:h-80 lg:h-96">
+        <div class="absolute top-0 right-0 w-3/4 h-3/5 bg-royal rounded-lg border-2 border-black animate-float-1"></div>
+        <div
+          class="absolute top-8 -left-4 md:-left-8 w-2/5 h-24 bg-coral rounded-lg border-2 border-black animate-float-2">
+        </div>
+        <div class="absolute bottom-4 left-1/4 w-2/5 h-28 bg-sun rounded-lg border-2 border-black animate-float-1"
+          style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-0 right-4 w-1/3 h-20 bg-mint rounded-lg border-2 border-black animate-float-2"
+          style="animation-delay: 2s;"></div>
+        <div class="absolute top-4 right-4 w-12 h-12 bg-violet rounded border-2 border-black"></div>
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl md:text-9xl font-black text-white/30 select-none pointer-events-none">
+          Z
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
+    <div class="flex gap-1.5">
+      <span class="block h-1.5 w-16 bg-royal rounded-sm border border-black"></span>
+      <span class="block h-1.5 w-8 bg-coral rounded-sm border border-black"></span>
+      <span class="block h-1.5 w-4 bg-sun rounded-sm border border-black"></span>
+    </div>
+  </div>
+
+  <section id="articles" class="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+
+    <div id="articles-title" class="flex items-center gap-4 mb-10 md:mb-14">
+      <span class="block w-2 h-8 md:h-10 bg-royal rounded-sm border border-black"></span>
+      <h2 class="text-2xl md:text-3xl font-black tracking-tight">最新随笔</h2>
+      <span class="text-sm text-gray-400 font-medium mt-1">— 随便写写，随便看看</span>
+    </div>
+
+    <!-- 文章卡片网格（JS 动态渲染） -->
+    <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"></div>
+
+    <div class="mt-10 md:mt-14 text-center">
+      <button id="btn-load-more"
+        class="btn-pop px-8 py-3 border-2 border-black rounded-lg font-bold text-base bg-coral text-white hidden">
+        加载更多 ↓
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== 时间统计页面 ===== -->
+  <section id="time-section" class="hidden max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-20">
+
+    <!-- 标题栏 -->
+    <div id="time-title" class="flex items-center gap-4 mb-6 md:mb-8">
+      <span class="block w-2 h-8 md:h-10 bg-violet rounded-sm border border-black"></span>
+      <h2 class="text-2xl md:text-3xl font-black tracking-tight">时间统计</h2>
+      <span class="text-sm text-gray-400 font-medium mt-1">— 屏幕时间可视化</span>
+    </div>
+
+    <!-- 数据源切换 Tab -->
+    <div class="flex border-2 border-black rounded-lg overflow-hidden mb-6">
+      <button id="btn-source-software"
+        class="px-5 py-2 text-sm font-bold transition-colors rounded-l-lg bg-royal text-white">软件使用</button>
+      <button id="btn-source-web" class="px-5 py-2 text-sm font-bold transition-colors rounded-r-lg bg-white text-ink hover:bg-gray-100">网页浏览</button>
+    </div>
+
+    <!-- 统计概览卡片 -->
+    <div id="time-summary" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"></div>
+
+    <!-- 控制栏 -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <!-- 日期导航 -->
+      <div class="flex items-center gap-3">
+        <button id="btn-nav-prev"
+          class="btn-pop px-3 py-1.5 border-2 border-black rounded-lg font-bold text-sm bg-white hover:bg-gray-100 transition-colors">←</button>
+        <span id="time-range-label" class="text-sm font-bold text-ink min-w-[180px] text-center"></span>
+        <button id="btn-nav-next"
+          class="btn-pop px-3 py-1.5 border-2 border-black rounded-lg font-bold text-sm bg-white hover:bg-gray-100 transition-colors">→</button>
+      </div>
+      <!-- 图表类型切换 -->
+      <div class="flex border-2 border-black rounded-lg overflow-hidden">
+        <button id="btn-chart-bar"
+          class="px-4 py-1.5 text-sm font-bold transition-colors bg-royal text-white">条形图</button>
+        <button id="btn-chart-heatmap"
+          class="px-4 py-1.5 text-sm font-bold transition-colors bg-white text-ink hover:bg-gray-100">热力图</button>
+      </div>
+    </div>
+
+    <!-- 条形图专属：按周/按月切换 -->
+    <div id="bar-controls" class="hidden flex items-center gap-3 mb-4">
+      <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">粒度</span>
+      <button id="btn-bar-week"
+        class="px-3 py-1 text-xs font-bold border-2 border-black rounded bg-royal text-white transition-colors">按周</button>
+      <button id="btn-bar-month"
+        class="px-3 py-1 text-xs font-bold border-2 border-black rounded bg-white text-ink hover:bg-gray-100 transition-colors">按月</button>
+    </div>
+
+    <!-- 条形图容器 -->
+    <div id="bar-chart-container" class="border-2 border-black rounded-lg bg-white p-4 md:p-6">
+      <canvas id="bar-canvas" class="w-full" height="120"></canvas>
+    </div>
+
+    <!-- 热力图容器 -->
+    <div id="heatmap-container" class="hidden border-2 border-black rounded-lg bg-white p-4 md:p-6">
+      <!-- 热力图网格（列数由 JS 动态设置） -->
+      <div id="heatmap-grid" class="grid gap-px"></div>
+      <!-- 图例 -->
+      <div class="flex items-center gap-1.5 mt-4 justify-end">
+        <span class="text-[10px] text-gray-400">少</span>
+        <span class="heatmap-legend block w-2.5 h-2.5 rounded-sm" style="background:#9BE9A8"></span>
+        <span class="heatmap-legend block w-2.5 h-2.5 rounded-sm" style="background:#40C463"></span>
+        <span class="heatmap-legend block w-2.5 h-2.5 rounded-sm" style="background:#216E39"></span>
+        <span class="text-[10px] text-gray-400">多</span>
+      </div>
+    </div>
+
+    <!-- 本地 CSV 数据源（可选；默认仍走后端） -->
+    <div class="mt-6 border-2 border-black rounded-lg bg-white p-4 md:p-6">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="block w-3 h-3 bg-mint rounded-sm border border-black"></span>
+        <h3 class="text-lg font-black">本地 CSV 数据源</h3>
+        <span class="text-xs text-gray-400">可选</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-4">
+        默认显示后端数据。如需查看自己的 Tai 导出文件，可在此上传一份 CSV，热力图与单日明细将在本地解析；刷新页面后恢复为后端数据。
+      </p>
+      <div class="flex flex-wrap items-center gap-4">
+        <button id="btn-load-local-csv"
+          class="btn-pop px-5 py-2.5 border-2 border-black rounded-lg font-bold text-sm bg-white text-ink hover:bg-mint">
+          选择本地 CSV
+        </button>
+        <input type="file" id="local-csv-input" accept=".csv" class="hidden">
+        <span id="local-csv-status" class="text-sm text-gray-500">当前数据源：<span
+            class="font-bold text-ink">后端</span></span>
+      </div>
+      <p id="local-csv-error" class="hidden mt-3 text-sm text-coral font-medium"></p>
+    </div>
+
+    <!-- 统一 Tooltip -->
+    <div id="time-tooltip"
+      class="fixed hidden pointer-events-none z-50 bg-white text-ink border-2 border-black rounded-lg shadow-hard-sm p-3 transition-all duration-300 min-w-[200px]">
+      <div id="tt-date" class="text-xs font-bold mb-2 pb-1.5 border-b border-gray-200 dark:border-gray-600"></div>
+      <div id="tt-apps" class="flex flex-col gap-1"></div>
+    </div>
+
+  </section>
+
+  <footer class="border-t-2 border-black mt-12 md:mt-20">
+    <div class="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-10 md:py-14">
+      <div class="flex gap-1.5 mb-8">
+        <span class="block h-1.5 w-10 bg-royal rounded-sm border border-black"></span>
+        <span class="block h-1.5 w-6 bg-coral rounded-sm border border-black"></span>
+        <span class="block h-1.5 w-3 bg-sun rounded-sm border border-black"></span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <div class="space-y-3">
+          <span class="flex items-center gap-2 text-xl font-black tracking-tight">
+            <span class="block w-2.5 h-2.5 bg-royal rounded-sm flex-shrink-0 border border-black"></span>
+            拾光札记
+          </span>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-xs">
+            一个学生的日常记录。<br>不追求深刻，只追求真实。
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <span class="text-sm font-bold uppercase tracking-wider text-gray-400">导航</span>
+          <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <a href="#" class="text-ink hover:text-royal font-medium transition-colors">随笔</a>
+            <a href="#/about" class="text-ink hover:text-royal font-medium transition-colors">关于</a>
+            <a href="#/time" class="text-ink hover:text-royal font-medium transition-colors">时间</a>
+            <a href="#" class="text-ink hover:text-royal font-medium transition-colors">RSS</a>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <span class="text-sm font-bold uppercase tracking-wider text-gray-400">找到我</span>
+          <div class="flex gap-4">
+            <a href="https://github.com/zfgy-ma"
+              class="w-10 h-10 flex items-center justify-center border-2 border-black rounded hover:bg-royal hover:text-white hover:border-royal transition-colors"
+              title="GitHub">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+            </a>
+            <a href="mailto:zfgy_ma@foxmail.com"
+              class="w-10 h-10 flex items-center justify-center border-2 border-black rounded hover:bg-royal hover:text-white hover:border-royal transition-colors"
+              title="邮箱">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </a>
+            <a href="#"
+              class="w-10 h-10 flex items-center justify-center border-2 border-black rounded hover:bg-royal hover:text-white hover:border-royal transition-colors"
+              title="RSS">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="mt-10 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-3 text-sm text-gray-400">
+        <span>&copy; 2026 拾光札记 · 由claude与咖啡驱动</span>
+        <span class="font-medium text-gray-500">"记录本身，即是反抗。"</span>
+        <a onclick="jumpGabPre('您即将离开公安部“互联网+政务服务”平台，后续服务将由全国互联网安全管理服务平台（https://beian.mps.gov.cn）提供。',
+                                    'https://beian.mps.gov.cn/#/query/webSearch?code=11010102000001')">皖ICP备2026017159号-1</a>
+      </div>
+    </div>
+  </footer>
+  <script type="text/javascript" src="./js/index.js"></script>
+</body>
+
+</html>

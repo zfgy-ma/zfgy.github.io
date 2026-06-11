@@ -1,0 +1,212 @@
+    @import "tailwindcss";
+    /* 平滑主题过渡 */
+    body { transition: background-color 0.5s, color 0.5s; }
+
+    /* ===== 暗黑模式 ===== */
+    html.dark body {
+      background-color: #121212; color: #e0e0e0;
+    }
+    html.dark .bg-white    { background-color: #1e1e1e !important; }
+    html.dark .text-ink    { color: #e0e0e0 !important; }
+    html.dark .text-gray-500 { color: #a0a0a0 !important; }
+    html.dark .text-gray-600 { color: #b0b0b0 !important; }
+    html.dark .text-gray-400 { color: #888 !important; }
+    html.dark .border-black   { border-color: #444 !important; }
+    html.dark .border-gray-200 { border-color: #333 !important; }
+    html.dark .border-gray-100 { border-color: #333 !important; }
+    html.dark .bg-gray-100   { background-color: #2a2a2a !important; }
+    html.dark .bg-gray-200   { background-color: #333 !important; }
+    html.dark .bg-gray-50    { background-color: #1a1a1a !important; }
+    html.dark .shadow-hard-sm { box-shadow: 3px 3px 0 #555 !important; }
+    html.dark .btn-pop:hover  { box-shadow: 4px 4px 0px 0px #555 !important; }
+    html.dark .card-pop:hover { box-shadow: 6px 6px 0px 0px #555 !important; }
+    html.dark .prose    { color: #e0e0e0; }
+    html.dark .markdown-body strong { color: #e0e0e0 !important; }
+    html.dark .markdown-body blockquote { background: #1e1e1e; color: #a0a0a0; }
+    html.dark .markdown-body code { background: #2a2a2a; color: #e0e0e0; }
+    html.dark .markdown-body h2 { border-color: #333; }
+    html.dark .markdown-body hr { border-color: #333; }
+    html.dark .bg-sun.text-ink,
+    html.dark .bg-mint.text-ink { color: #111111 !important; }
+
+    /* ===== 时间统计页面样式 ===== */
+    #heatmap-grid {
+      display: grid;
+      grid-template-rows: repeat(14, 20px);
+      grid-auto-flow: column;
+      gap: 4px;
+      width: 100%;
+    }
+    #heatmap-grid .heatmap-cell {
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: outline 0.05s;
+      outline: 2px solid #fff;
+      outline-offset: -1px;
+    }
+    #heatmap-grid .heatmap-cell:hover {
+      outline: 2px solid #111;
+      z-index: 2;
+    }
+    #heatmap-grid .heatmap-cell.empty {
+      background: #EBEDF0 !important;
+      cursor: default;
+    }
+    #heatmap-grid .heatmap-cell.empty:hover {
+      outline: 2px solid #fff;
+    }
+    html.dark #bar-chart-container { background-color: #1e1e1e !important; }
+    html.dark #heatmap-container { background-color: #1e1e1e !important; }
+    html.dark #heatmap-grid .heatmap-cell { outline-color: #1e1e1e; }
+    html.dark #heatmap-grid .heatmap-cell:hover { outline-color: #e0e0e0; }
+    html.dark #heatmap-grid .heatmap-cell.empty { background: #2a2a2a !important; }
+    html.dark #heatmap-grid .heatmap-cell.empty:hover { outline-color: #1e1e1e; }
+    html.dark #btn-nav-prev,
+    html.dark #btn-nav-next { background-color: #2a2a2a !important; color: #e0e0e0 !important; }
+    html.dark #time-tooltip { background-color: #111 !important; color: #e0e0e0 !important; }
+    html.dark #time-tooltip #tt-date { border-color: #333; }
+
+    /* ===== 自定义颜色（Tailwind Play CDN 不支持 config，纯 CSS 定义）===== */
+    /* ===== 自定义颜色（Tailwind Play CDN 不支持 config，纯 CSS 定义）===== */
+    :root {
+      --ink:    #111111;
+      --royal:  #2563EB;
+      --coral:  #FF6B6B;
+      --sun:    #FFD93D;
+      --mint:   #4ADE80;
+      --violet: #A78BFA;
+    }
+    .bg-ink    { background-color: var(--ink); }
+    .bg-royal  { background-color: var(--royal); }
+    .bg-coral  { background-color: var(--coral); }
+    .bg-sun    { background-color: var(--sun); }
+    .bg-mint   { background-color: var(--mint); }
+    .bg-violet { background-color: var(--violet); }
+    .text-ink    { color: var(--ink); }
+    .text-royal  { color: var(--royal); }
+    .text-coral  { color: var(--coral); }
+    .text-sun    { color: var(--sun); }
+    .text-mint   { color: var(--mint); }
+    .text-violet { color: var(--violet); }
+    .hover\:text-violet:hover { color: var(--violet); }
+    .border-royal  { border-color: var(--royal); }
+    .border-coral  { border-color: var(--coral); }
+    .border-sun    { border-color: var(--sun); }
+    .border-mint   { border-color: var(--mint); }
+    .border-violet { border-color: var(--violet); }
+    /* 透明度变体（卡片封面装饰用） */
+    .bg-royal\/25  { background-color: color-mix(in srgb, var(--royal) 25%, transparent); }
+    .bg-royal\/30  { background-color: color-mix(in srgb, var(--royal) 30%, transparent); }
+    .bg-coral\/25  { background-color: color-mix(in srgb, var(--coral) 25%, transparent); }
+    .bg-coral\/30  { background-color: color-mix(in srgb, var(--coral) 30%, transparent); }
+    .bg-sun\/35    { background-color: color-mix(in srgb, var(--sun) 35%, transparent); }
+    .bg-mint\/35   { background-color: color-mix(in srgb, var(--mint) 35%, transparent); }
+    .bg-violet\/25 { background-color: color-mix(in srgb, var(--violet) 25%, transparent); }
+    .bg-violet\/30 { background-color: color-mix(in srgb, var(--violet) 30%, transparent); }
+    /* hover / focus 变体 */
+    .hover\:bg-royal:hover  { background-color: var(--royal); }
+    .hover\:bg-coral:hover  { background-color: var(--coral); }
+    .hover\:bg-sun:hover    { background-color: var(--sun); }
+    .hover\:bg-ink:hover    { background-color: var(--ink); }
+    .hover\:text-royal:hover  { color: var(--royal); }
+    .hover\:text-coral:hover  { color: var(--coral); }
+    .hover\:text-ink:hover   { color: var(--ink); }
+    .hover\:text-white:hover { color: #fff; }
+    .hover\:border-royal:hover { border-color: var(--royal); }
+    .focus\:border-royal:focus { border-color: var(--royal); }
+
+    /* ===== 色彩测试标板（内联于 Header，随页面滚动）===== */
+    .color-palette {
+      display: inline-flex;
+      flex-direction: row;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    .color-palette .swatch {
+      width: 12px;
+      height: 20px;
+      flex-shrink: 0;
+      outline: 1px solid #fff;
+      outline-offset: -1px;
+      cursor: pointer;
+      position: relative;
+    }
+    .color-palette .swatch:hover {
+      outline: 2px solid #000;
+      outline-offset: -2px;
+      z-index: 2;
+    }
+    .color-palette .swatch:hover::after {
+      content: attr(data-hex);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 4px;
+      padding: 2px 4px;
+      background: #111;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      line-height: 1.3;
+      white-space: nowrap;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* 按钮硬阴影弹出动效 */
+    .btn-pop {
+      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-pop:hover {
+      transform: translate(-4px, -4px);
+      box-shadow: 4px 4px 0px 0px #111111;
+    }
+    .btn-pop:active {
+      transform: translate(0px, 0px);
+      box-shadow: 0px 0px 0px 0px #111111;
+    }
+
+    /* 导航按钮不参与弹出位移，避免相邻重叠 */
+    #btn-nav-prev:hover,
+    #btn-nav-next:hover {
+      transform: none;
+    }
+
+    /* Bento 卡片硬阴影弹出动效 */
+    .card-pop {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-pop:hover {
+      transform: translate(-6px, -6px);
+      box-shadow: 6px 6px 0px 0px #111111;
+    }
+
+    /* ===== 导航菜单选中态文字颜色 ===== */
+    .nav-active.text-royal  { color: var(--royal) !important; }
+    .nav-active.text-coral  { color: var(--coral) !important; }
+    .nav-active.text-violet { color: var(--violet) !important; }
+    .nav-active.text-sun    { color: var(--sun) !important; }
+    .nav-active.text-mint   { color: var(--mint) !important; }
+    html.dark .nav-active.text-royal  { color: var(--royal) !important; }
+    html.dark .nav-active.text-coral  { color: var(--coral) !important; }
+    html.dark .nav-active.text-violet { color: var(--violet) !important; }
+    html.dark .nav-active.text-sun    { color: #333 !important; }
+    html.dark .nav-active.text-mint   { color: #333 !important; }
+
+    /* 英雄区几何块的扁平化浮动动画（无渐变滑行） */
+    @keyframes flatFloat1 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes flatFloat2 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+    .animate-float-1 { animation: flatFloat1 4s ease-in-out infinite; }
+    .animate-float-2 { animation: flatFloat2 5s ease-in-out infinite; }
+
+    
